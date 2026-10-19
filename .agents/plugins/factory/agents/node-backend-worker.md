@@ -1,6 +1,10 @@
 ---
 name: node-backend-worker
 description: "Node.js backend builder subagent that removes redundant npm packages in favor of native Node LTS APIs, extracts duplicated DRY logic into shared modules, removes dead exports, and documents stable-critical modules."
+model: pro
+commandExecutionPolicy: sandbox
+skills:
+  - skills/platform
 tools:
   - view_file
   - write_to_file
@@ -10,7 +14,6 @@ tools:
   - list_dir
   - run_command
 subagent: true
-commandExecutionPolicy: auto
 ---
 
 # Node.js Backend Worker Persona

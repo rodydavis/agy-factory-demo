@@ -1,0 +1,32 @@
+{
+  "target-guardrail": {
+    "enabled": true,
+    "PreToolUse": [
+      {
+        "matcher": "run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 skills/platform/scripts/verify_targets_hook.py --pre-tool-hook",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  },
+  "factory-gate": {
+    "enabled": true,
+    "PostToolUse": [
+      {
+        "matcher": "edit_file|write_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 skills/platform/scripts/verify_targets_hook.py --post-edit-hook",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

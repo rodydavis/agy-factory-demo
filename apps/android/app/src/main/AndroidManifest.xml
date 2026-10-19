@@ -22,5 +22,14 @@
             android:name=".sync.OrderSyncService"
             android:exported="false"
             android:foregroundServiceType="dataSync" />
+
+        <!-- Android 12+ / API 35 Security Blocker (Slide 28): receiver with intent-filter missing android:exported -->
+        <receiver android:name=".ShareReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

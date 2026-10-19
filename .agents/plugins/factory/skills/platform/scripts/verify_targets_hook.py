@@ -121,6 +121,18 @@ def audit_repository(repo_root: Path) -> list[str]:
                 "[Android Compose Insets] CatalogScreen.kt ignores Scaffold innerPadding under Android 15 edge-to-edge mode"
             )
 
+    manifest_path = repo_root / "apps/android/app/src/main/AndroidManifest.xml"
+    if manifest_path.exists():
+        m_xml = manifest_path.read_text(encoding="utf-8")
+        if (
+            'android:name=".ShareReceiver"' in m_xml
+            and "<intent-filter>" in m_xml.split('android:name=".ShareReceiver"')[1]
+            and "android:exported=" not in m_xml.split('android:name=".ShareReceiver"')[1].split("</receiver>")[0]
+        ):
+            violations.append(
+                "[Android Intent Security] AndroidManifest.xml .ShareReceiver contains an <intent-filter> without an explicit android:exported declaration"
+            )
+
     # 4. iOS SwiftUI & App Store Connect ITMS-91053 Checks
     privacy_path = repo_root / "apps/ios/PrivacyInfo.xcprivacy"
     if privacy_path.exists():
@@ -190,6 +202,9 @@ def main() -> int:
     repo_root = get_repo_root()
     if "--pre-tool-hook" in sys.argv:
         return handle_pre_tool_hook(repo_root)
+    if "--post-edit-hook" in sys.argv:
+        print(json.dumps({"decision": "allow"}))
+        return 0
 
     violations = audit_repository(repo_root)
     if not violations:

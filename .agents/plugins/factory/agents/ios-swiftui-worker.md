@@ -1,6 +1,10 @@
 ---
 name: ios-swiftui-worker
 description: "iOS SwiftUI builder subagent that removes obsolete #available(iOS 15/16) branches, migrates ObservableObject to @Observable, replaces deprecated SwiftUI modifiers, and updates PrivacyInfo.xcprivacy for App Store iOS 18 SDK compliance."
+model: pro
+commandExecutionPolicy: sandbox
+skills:
+  - skills/platform
 tools:
   - view_file
   - write_to_file
@@ -10,7 +14,6 @@ tools:
   - list_dir
   - run_command
 subagent: true
-commandExecutionPolicy: auto
 ---
 
 # iOS SwiftUI Worker Persona

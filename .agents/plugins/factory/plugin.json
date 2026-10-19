@@ -1,0 +1,12 @@
+{
+  "name": "factory",
+  "displayName": "Evergreen Software Factory (Workers, Lines & Jidoka Inspectors)",
+  "version": "1.0.0",
+  "description": "Complete 5-step Antigravity Software Factory plugin: Main Factory Agent (software-factory), Parallel Worktree Builders, Reusable Factory-Line Skills (platform, onboarding), Read-Only Jidoka Inspectors (commandExecutionPolicy: off), Andon + Poka-Yoke self-correction, and Pre/PostToolUse hooks.",
+  "suggestedPrompts": [
+    "Run the platform skill across Node.js, Android Jetpack Compose, and iOS SwiftUI with Jidoka Andon inspection and Poka-Yoke self-correction",
+    "Run onboarding to interview me, generate .agents/platform-targets.yaml, and customize our factory skills",
+    "Audit git code freshness for files untouched > 365 days and check @stability stable-critical documentation",
+    "Verify all platform targets and store compliance guardrails using verify_targets_hook.py"
+  ]
+}
