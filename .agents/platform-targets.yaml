@@ -1,0 +1,41 @@
+# .agents/platform-targets.yaml
+# Single source of truth for runtime support windows, store target SDKs, and Git code freshness
+
+policy:
+  proactive_code_removal: true         # Remove shims, dead code & redundant libs once supported across target matrix
+  enforce_dry_consolidation: true      # Extract duplicated logic (>= 12 lines across 2+ files) into shared modules
+  require_progressive_fallback: true   # APIs newer than min_supported must use runtime/availability guards + @remove-when tags
+
+code_freshness:
+  stale_threshold_days: 365            # Flag files not updated in Git for > 365 days
+  require_stability_docs_on_critical: true
+  required_annotations:                # Critical code that changes infrequently MUST include these doc tags:
+    - "@stability stable-critical"     # Marks intentional stability so it is never mistaken for legacy bloat
+    - "@last-verified"                 # ISO date when invariants & tests were last verified
+    - "@invariants"                    # Explanation of why this module changes infrequently
+
+node_backend:
+  current_lts: "22.9.0"
+  min_supported: "20.12.0"             # Support current LTS (22.x) and previous active LTS (20.12+)
+  min_lts_versions_back: 1
+  evict_redundant_npm_packages: true
+  replaceable_packages:
+    - "node-fetch"                     # Native global fetch() (Node 18+)
+    - "uuid"                           # Native crypto.randomUUID() (Node 19+)
+    - "rimraf"                         # Native fs.rmSync(..., { recursive: true, force: true }) (Node 14.14+)
+    - "chalk"                          # Native util.styleText() (Node 20.12+)
+    - "dotenv"                         # Native process.loadEnvFile() (Node 20.12+)
+    - "glob"                           # Native fs.globSync() (Node 22.0+ -> requires @remove-when fallback for 20.12!)
+
+android_compose:
+  google_play_target_sdk: 35           # Annual Google Play Target API requirement (Android 15)
+  min_sdk: 29                          # Android 10 (API 29) — remove all `SDK_INT <= 29` dead branches
+  compose_bom: "2026.05.00"            # Prefer native Material 3 over deprecated Accompanist libraries
+  require_edge_to_edge: true
+  require_fgs_timeout_handler: true
+
+ios_swiftui:
+  app_store_target_sdk: "18.0"         # Annual Apple App Store submission SDK (iOS 18)
+  min_os_version: "17.0"               # iOS 17.0+ — remove all `#available(iOS 15/16/17, *)` dead branches
+  prefer_observation_macro: true       # Migrate ObservableObject/@Published to Swift @Observable (iOS 17+)
+  require_privacy_manifest_reasons: true
